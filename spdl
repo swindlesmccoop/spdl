@@ -1,5 +1,7 @@
 #!/bin/bash
 
+if [ -z ${var+x} ]; then echo "Please set a SONGS variable in your shell configuration." && exit 1; fi
+
 function search {
     printf "Searching for '$2', please hold...\n\n"
     RESULT=$(curl -s "https://search.stepmaniaonline.net/packs/$2" | grep -o -P '(?<=/link/).*(?=.zip)')
