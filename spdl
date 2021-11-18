@@ -1,0 +1,19 @@
+#!/bin/bash
+
+function search {
+    printf "Searching for '$2', please hold...\n\n"
+    RESULT=$(curl -s "https://search.stepmaniaonline.net/packs/$2" | grep -o -P '(?<=/link/).*(?=.zip)')
+    if [ "$RESULT" == "" ]; then echo "No results found!"; else printf "$RESULT\n\n"; fi
+}
+
+function ddl {
+    PACK=$(echo "$2" | sed -e 's/ /%20/g')
+    echo "$PACK"
+    curl -L https://search.stepmania.net/link/"$PACK" -o "$2".zip
+}
+
+case "$1" in
+    -s) search "$@" ;;
+    -d) ddl "$@" ;;
+esac
+
