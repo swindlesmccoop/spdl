@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -z ${var+x} ]; then echo "Please set a SONGS variable in your shell configuration." && exit 1; fi
+#if [ -z ${SONGS+x} ]; then echo "Please set a SONGS variable in your shell configuration." && exit 1; fi
 
 function search {
     printf "Searching for '$2', please hold...\n\n"
@@ -10,8 +10,10 @@ function search {
 
 function ddl {
     PACK=$(echo "$2" | sed -e 's/ /%20/g')
-    echo "$PACK"
-    curl -L https://search.stepmania.net/link/"$PACK" -o "$2".zip
+    #wget "https://search.stepmania.net/static/new/$PACK.zip"
+    LINK=$(curl -L -s "https://search.stepmania.net/static/new/$PACK.zip" | sed -e "s/.\{106\}https/ https/g" | sed -e "s/.\{21\}html>/ html>/g" | sed "s/ html>//" | sed "s/^ \(.*\)/\1/")
+    #echo "$LINK"
+    curl -L "$LINK" -o "$2".zip
 }
 
 case "$1" in
