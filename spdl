@@ -1,6 +1,12 @@
 #!/bin/bash
 
-#if [ -z ${SONGS+x} ]; then echo "Please set a SONGS variable in your shell configuration." && exit 1; fi
+if [[ -f $HOME/.config/spdl/songs.dir ]]; then
+    SONGS=$(cat "$HOME/.config/spdl/songs.dir")
+else
+    mkdir "$HOME/.config/spdl/"
+    touch "$HOME/.config/spdl/songs.dir"
+    echo "Please place the path to your Songs directory (WITHOUT A TRAILING SLASH) in ~/.config/spdl/songs.dir"
+fi
 
 function search {
     printf "Searching for '$2', please hold...\n\n"
@@ -10,10 +16,12 @@ function search {
 
 function ddl {
     PACK=$(echo "$2" | sed -e 's/ /%20/g')
-    #wget "https://search.stepmania.net/static/new/$PACK.zip"
-    LINK=$(curl -L -s "https://search.stepmania.net/static/new/$PACK.zip" | sed -e "s/.\{106\}https/ https/g" | sed -e "s/.\{21\}html>/ html>/g" | sed "s/ html>//" | sed "s/^ \(.*\)/\1/")
-    #echo "$LINK"
-    curl -L "$LINK" -o "$2".zip
+    printf "Download starting, this may take a while. You will receive a notification when the download is complete.\n\n"
+    curl -L "https://search.stepmaniaonline.net/static/new/$PACK.zip" -o "$2.zip"
+    notify-send "Your download of $2 is complete" &
+    unzip -qq "$2.zip" > /dev/null 2>&1
+    rm "$2.zip"
+    mv "$2" $SONGS/
 }
 
 case "$1" in
