@@ -24,8 +24,19 @@ function ddl {
     mv "$2" $SONGS/
 }
 
+function spdl_help {
+    printf 'StepMania Pack Downloader (spdl) by swindlesmccoop\n\nUsage: spdl [-dhs] "[pack]"\n-d, --download: (D)ownload [pack]\n-h, --help: Print this (h)elp message\n-s, --search: (S)earch for a [pack] through the StepManiaOnline.net pack repository\n\nPLEASE READ: WHEN SUPPLYING INPUT, ALWAYS PUT SAID INPUT IN DOUBLE QUOTES\n' && exit 1
+}
+
+#if no parameters are supplied, print help
+if [ $# -eq 0 ]; then spdl_help; fi
+
 case "$1" in
-    -s) search "$@" ;;
     -d) ddl "$@" ;;
-esac
+    --download) ddl "$@" ;;
+    -h) spdl_help ;;
+    --help) spdl_help ;;
+    -s) search "$@" ;;
+    --search) search "$@" ;;
+    esac
 

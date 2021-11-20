@@ -1,3 +1,12 @@
-# Stepmania Pack Downloader
+## Usage
+spdl [-dhs] "[pack]"
 
-This shell script searches search.stepmaniaonline.net from the terminal and allows you to download and unzip the packs into a specified Songs directory
+-d, --download: (D)ownload [pack]
+-h, --help: Print a (h)elp message
+-s, --search: Search for a [pack] through the StepManiaOnline.net pack repository
+
+## IMPORTANT NOTE ABOUT USAGE
+When supplying input, always put said input in double quotes.
+
+## Installation
+`sudo chmod +x spdl && sudo mv spdl /usr/bin/`
