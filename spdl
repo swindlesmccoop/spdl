@@ -22,7 +22,7 @@ function ddl {
     notify-send "Your download of $2 is complete" &
     unzip -qq "$2.zip" > /dev/null 2>&1
     rm "$2.zip"
-    mv "$2" $SONGS/
+    mv "$2/" "$SONGS/$2"
 }
 
 function spdl_help {
@@ -39,5 +39,5 @@ case "$1" in
     --help) spdl_help ;;
     -s) search "$@" ;;
     --search) search "$@" ;;
-    esac
+esac
 
