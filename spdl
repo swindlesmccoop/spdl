@@ -10,8 +10,8 @@ fi
 
 function search {
     printf "Searching for '$2', please hold...\n\n"
-    TERM=$(echo "$2" | sed -e "s/ /%20/g" | sed -e "s/#/%23/g" | sed -e "s/\^/%5E/g")
-    RESULT=$(curl -s "https://search.stepmaniaonline.net/packs/$TERM" | grep -o -P '(?<=/link/).*(?=.zip)')
+    SEARCHTERM=$(echo "$2" | sed -e "s/ /%20/g" | sed -e "s/#/%23/g" | sed -e "s/\^/%5E/g")
+    RESULT=$(curl -s "https://search.stepmaniaonline.net/packs/$SEARCHTERM" | grep -o -P '(?<=/link/).*(?=.zip)')
     if [ "$RESULT" == "" ]; then echo "No results found!"; else printf "$RESULT\n\n"; fi
 }
 
