@@ -18,10 +18,11 @@ function search {
 function ddl {
     PACK=$(echo "$2" | sed -e "s/ /%20/g" | sed -e "s/#/%23/g" | sed -e "s/\^/%5E/g")
     printf "Download starting, this may take a while. You will receive a notification when the download is complete.\n\n"
-    curl -L "https://search.stepmaniaonline.net/static/new/$PACK.zip" -o "$SONGS/$2.zip"
+    cd "$SONGS"
+    curl "https://search.stepmaniaonline.net/static/new/$PACK.zip" -o "$2.zip"
     notify-send "Your download of $2 is complete" &
-    unzip -qq "$SONGS/$2.zip" > /dev/null 2>&1
-    rm "$SONGS/$2.zip"
+    unzip -qq "$2.zip" > /dev/null 2>&1
+    rm "$2.zip"
 }
 
 function spdl_help {
