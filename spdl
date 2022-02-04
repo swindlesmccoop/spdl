@@ -1,28 +1,34 @@
 #!/bin/sh
 
+#make sure the user has set their Songs folder so we can make a variable
 if [ -f "$HOME"/.config/spdl/songs.dir ]; then
-    SONGS=$(cat "$HOME/.config/spdl/songs.dir")
+	SONGS=$(cat "$HOME/.config/spdl/songs.dir")
 else
-    mkdir "$HOME/.config/spdl/"
+    mkdir -p "$HOME/.config/spdl/"
     touch "$HOME/.config/spdl/songs.dir"
     echo "Please place the path to your Songs directory (WITHOUT A TRAILING SLASH) in ~/.config/spdl/songs.dir"
 fi
 
 search () {
     printf "Searching for '$2', please hold...\n\n"
-    SEARCHTERM=$(echo "$2" | sed -e "s/ /%20/g" | sed -e "s/#/%23/g" | sed -e "s/\^/%5E/g")
+    SEARCHTERM=$(echo "$2" | sed "s/ /%20/g" | sed "s/#/%23/g" | sed "s/\^/%5E/g" | sed "s/\!/%21/g")
     RESULT=$(curl -s "https://search.stepmaniaonline.net/packs/$SEARCHTERM" | grep -o -P '(?<=/link/).*(?=.zip)')
     if [ "$RESULT" = "" ]; then echo "No results found!"; else printf "$RESULT\n\n"; fi
 }
 
 ddl () {
-    PACK=$(echo "$2" | sed -e "s/ /%20/g" | sed -e "s/#/%23/g" | sed -e "s/\^/%5E/g")
+    PACK=$(echo "$2" | sed "s/ /%20/g" | sed "s/#/%23/g" | sed "s/\^/%5E/g" | sed "s/\!/%21/g")
+    if [ -d "$SONGS" ]; then
+		cd "$SONGS"
+	else
+		echo "Cannot access Songs directory. Does it exist?" && exit
+	fi
     printf "Download starting, this may take a while. You will receive a notification when the download is complete.\n\n"
-    cd "$SONGS" || echo "Cannot find Songs directory! Exiting..." && exit
     curl "https://search.stepmaniaonline.net/static/new/$PACK.zip" -o "$2.zip"
-    notify-send "Your download of $2 is complete" &
-    unzip -qq "$2.zip" > /dev/null 2>&1
+    unzip -qq -o "$2.zip" #automatically overwrites pack if it exists
     rm "$2.zip"
+	$(which notify-send) && notify-send "Your download of $2 is complete" &
+	echo 
 }
 
 spdl_help () {
@@ -32,6 +38,7 @@ spdl_help () {
 #if no parameters are supplied, print help
 if [ $# -eq 0 ]; then spdl_help; fi
 
+#handle arguments
 case "$1" in
     -d) ddl "$@" ;;
     --download) ddl "$@" ;;
@@ -40,4 +47,3 @@ case "$1" in
     -s) search "$@" ;;
     --search) search "$@" ;;
 esac
-
