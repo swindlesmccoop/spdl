@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-if [[ -f $HOME/.config/spdl/songs.dir ]]; then
+if [ -f $HOME/.config/spdl/songs.dir ]; then
     SONGS=$(cat "$HOME/.config/spdl/songs.dir")
 else
     mkdir "$HOME/.config/spdl/"
@@ -8,14 +8,14 @@ else
     echo "Please place the path to your Songs directory (WITHOUT A TRAILING SLASH) in ~/.config/spdl/songs.dir"
 fi
 
-function search {
+search () {
     printf "Searching for '$2', please hold...\n\n"
     SEARCHTERM=$(echo "$2" | sed -e "s/ /%20/g" | sed -e "s/#/%23/g" | sed -e "s/\^/%5E/g")
     RESULT=$(curl -s "https://search.stepmaniaonline.net/packs/$SEARCHTERM" | grep -o -P '(?<=/link/).*(?=.zip)')
     if [ "$RESULT" == "" ]; then echo "No results found!"; else printf "$RESULT\n\n"; fi
 }
 
-function ddl {
+ddl () {
     PACK=$(echo "$2" | sed -e "s/ /%20/g" | sed -e "s/#/%23/g" | sed -e "s/\^/%5E/g")
     printf "Download starting, this may take a while. You will receive a notification when the download is complete.\n\n"
     cd "$SONGS"
@@ -25,7 +25,7 @@ function ddl {
     rm "$2.zip"
 }
 
-function spdl_help {
+spdl_help () {
     printf 'StepMania Pack Downloader (spdl) by swindlesmccoop\n\nUsage: spdl [-dhs] "[pack]"\n-d, --download: (D)ownload [pack]\n-h, --help: Print this (h)elp message\n-s, --search: (S)earch for a [pack] through the StepManiaOnline.net pack repository\n\nPLEASE READ: WHEN SUPPLYING INPUT, ALWAYS PUT SAID INPUT IN DOUBLE QUOTES\n' && exit 1
 }
 
