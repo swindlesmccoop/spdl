@@ -1,14 +1,23 @@
+#Maintainer: swindlesmccoop <https://swindlesmccoop.xyz>
+#Contact: swindlesmccoop@waifu.club
 pkgname="spdl"
 pkgver="1.1"
 pkgrel="1"
 pkgdesc="Download StepMania packs through the terminal"
-depends=("fzf" "coreutils" "curl")
+arch=("any")
+url="https://gitlab.com/swindlesmccoop/spdl"
+depends=("curl" "fzf" "git" "unzip")
+optdepends=("libnotify: Desktop notifications when download complete")
 license=("custom")
-sha512sums=("SKIP")
-source="https://gitlab.com/swindlesmccoop/spdl.git"
+md5sums=("SKIP")
+source=("spdl::git://gitlab.com/swindlesmccoop/spdl.git")
+
+pkgver() {
+	cd "$pkgname"
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
 
 package() {
-	mkdir -p "${pkgdir}/usr/bin"
-	cd "${srcdir}"
-	cp -RT spdl "${pkgdir}/usr/bin/spdl"
+	cd "$pkgname"
+	install -Dm755 ./spdl "$pkgdir/usr/bin/spdl"
 }
