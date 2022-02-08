@@ -1,8 +1,8 @@
 #Maintainer: swindlesmccoop <https://swindlesmccoop.xyz>
 #Contact: swindlesmccoop@waifu.club
 pkgname="spdl"
-pkgver=r30.0c863a8
-pkgrel=1
+pkgver=1
+pkgrel=2
 pkgdesc="Download StepMania packs through the terminal"
 arch=("any")
 url="https://gitlab.com/swindlesmccoop/spdl"
