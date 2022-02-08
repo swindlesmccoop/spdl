@@ -7,6 +7,7 @@ else
 	mkdir -p "$HOME/.config/spdl/"
 	touch "$HOME/.config/spdl/songs.dir"
 	echo "Please place the path to your Songs directory (WITHOUT A TRAILING SLASH) in ~/.config/spdl/songs.dir"
+	exit
 fi
 
 ddl () {
@@ -25,7 +26,7 @@ ddl () {
 	curl "https://search.stepmaniaonline.net/static/new/$FPACK.zip" -o "$2.zip"
 	unzip -qq -o "$2.zip" #automatically overwrites pack if it exists
 	rm "$2.zip"
-	$(which notify-send) && notify-send "Your download of $2 is complete" &
+	$(where notify-send) && notify-send "Your download of $2 is complete" &
 	echo 
 }
 
@@ -42,6 +43,4 @@ case "$1" in
 	--download) ddl "$@" ;;
 	-h) spdl_help ;;
 	--help) spdl_help ;;
-	-s) search "$@" ;;
-	--search) search "$@" ;;
 esac
