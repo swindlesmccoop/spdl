@@ -1,21 +1,22 @@
 #!/bin/sh
 
+ddl () {
 #make sure the user has set their Songs folder so we can make a variable
-if [ -f "$HOME"/.config/spdl/songs.dir ]; then
-	SONGS=$(cat "$HOME/.config/spdl/songs.dir")
+	if [ -f "$HOME"/.config/spdl/songs.dir ]; then
+        SONGS=$(cat "$HOME/.config/spdl/songs.dir")
 else
-	mkdir -p "$HOME/.config/spdl/"
-	touch "$HOME/.config/spdl/songs.dir"
-	echo "Please place the path to your Songs directory (WITHOUT A TRAILING SLASH) in ~/.config/spdl/songs.dir"
-	exit
+        mkdir -p "$HOME/.config/spdl/"
+        touch "$HOME/.config/spdl/songs.dir"
+        echo "Please place the path to your Songs directory (WITHOUT A TRAILING SLASH) in ~/.config/spdl/songs.dir (file has been created for you)"
+        exit
 fi
 
-ddl () {
+#searching for the pack
 	printf "Searching for '$2', please hold...\n\n"
 	SEARCHTERM=$(echo "$2" | sed "s/ /%20/g" | sed "s/#/%23/g" | sed "s/\^/%5E/g" | sed "s/\!/%21/g")
 	RESULT=$(curl -s "https://search.stepmaniaonline.net/packs/$SEARCHTERM" | grep -o -P '(?<=/link/).*(?=.zip)')
 	if [ "$RESULT" = "" ]; then echo "No results found!"; fi
-	PACK=$(printf "$RESULT\n\n" | fzf)
+	PACK=$(printf "$RESULT" | fzf)
 	FPACK=$(echo "$PACK" | sed "s/ /%20/g" | sed "s/#/%23/g" | sed "s/\^/%5E/g" | sed "s/\!/%21/g")
 	if [ -d "$SONGS" ]; then
 		cd "$SONGS"
@@ -24,14 +25,24 @@ ddl () {
 	fi
 	printf "Download starting, this may take a while. You will receive a notification when the download is complete.\n\n"
 	curl "https://search.stepmaniaonline.net/static/new/$FPACK.zip" -o "$2.zip"
+	echo ""
 	unzip -qq -o "$2.zip" #automatically overwrites pack if it exists
 	rm "$2.zip"
-	$(where notify-send) 2&> /dev/null && notify-send "Your download of $2 is complete" &
-	echo 
+	if [ -f /usr/bin/notify-send ]; then
+		notify-send "Your download of $PACK is complete" &
+		else echo "Your download of $PACK is complete"
+		fi
+}
+
+search () {
+	printf "Searching for '$2', please hold...\n\n"
+        SEARCHTERM=$(echo "$2" | sed "s/ /%20/g" | sed "s/#/%23/g" | sed "s/\^/%5E/g" | sed "s/\!/%21/g")
+        RESULT=$(curl -s "https://search.stepmaniaonline.net/packs/$SEARCHTERM" | grep -o -P '(?<=/link/).*(?=.zip)')
+        if [ "$RESULT" = "" ]; then echo "No results found!"; else echo "$RESULT"; fi
 }
 
 spdl_help () {
-	printf 'StepMania Pack Downloader (spdl) by swindlesmccoop\n\nUsage: spdl [-dhs] "[pack]"\n-d, --download: (D)ownload [pack]\n-h, --help: Print this (h)elp message\n-s, --search: (S)earch for a [pack] through the StepManiaOnline.net pack repository\n\nPLEASE READ: WHEN SUPPLYING INPUT, ALWAYS PUT SAID INPUT IN DOUBLE QUOTES\n' && exit 1
+	printf 'StepMania Pack Downloader (spdl) by swindlesmccoop\n\nUsage: spdl [-dhs] [pack]\n-d, --download: (D)ownload [pack]\n-h, --help: Print this (h)elp message\n-s, --search: (S)earch for a [pack]\n\nWhen supplying the pack name, always put the pack name in double quotes\n' && exit 1
 }
 
 #if no parameters are supplied, print help
@@ -43,4 +54,6 @@ case "$1" in
 	--download) ddl "$@" ;;
 	-h) spdl_help ;;
 	--help) spdl_help ;;
+	-s) search "$@" ;;
+	--search) search "$@" ;;
 esac
