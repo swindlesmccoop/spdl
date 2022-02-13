@@ -15,7 +15,7 @@ fi
 	printf "Searching for '$2', please hold...\n\n"
 	SEARCHTERM=$(echo "$2" | sed "s/ /%20/g" | sed "s/#/%23/g" | sed "s/\^/%5E/g" | sed "s/\!/%21/g")
 	RESULT=$(curl -s "https://search.stepmaniaonline.net/packs/$SEARCHTERM" | grep -o -P '(?<=/link/).*(?=.zip)')
-	if [ "$RESULT" = "" ]; then echo "No results found!"; fi
+	if [ "$RESULT" = "" ]; then echo "No results found!" && exit; fi
 	PACK=$(printf "$RESULT" | fzf)
 	FPACK=$(echo "$PACK" | sed "s/ /%20/g" | sed "s/#/%23/g" | sed "s/\^/%5E/g" | sed "s/\!/%21/g")
 	if [ -d "$SONGS" ]; then
@@ -24,10 +24,10 @@ fi
 		echo "Cannot access Songs directory. Does it exist?" && exit
 	fi
 	printf "Download starting, this may take a while. You will receive a notification when the download is complete.\n\n"
-	curl "https://search.stepmaniaonline.net/static/new/$FPACK.zip" -o "$2.zip"
+	curl "https://search.stepmaniaonline.net/static/new/$FPACK.zip" -o "$PACK.zip"
 	echo ""
-	unzip -qq -o "$2.zip" #automatically overwrites pack if it exists
-	rm "$2.zip"
+	unzip -qq -o "$PACK.zip" #automatically overwrites pack if it exists
+	rm "$PACK.zip"
 	if [ -f /usr/bin/notify-send ]; then
 		notify-send "Your download of $PACK is complete" &
 		else echo "Your download of $PACK is complete"
