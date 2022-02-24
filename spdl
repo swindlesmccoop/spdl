@@ -1,15 +1,15 @@
 #!/bin/sh
 
 ddl () {
-#make sure the user has set their Songs folder so we can make a variable
+	#make sure the user has set their Songs folder so we can make a variable
 	if [ -f "$HOME"/.config/spdl/songs.dir ]; then
-        SONGS=$(cat "$HOME/.config/spdl/songs.dir")
-else
-        mkdir -p "$HOME/.config/spdl/"
-        touch "$HOME/.config/spdl/songs.dir"
-        echo "Please place the path to your Songs directory (WITHOUT A TRAILING SLASH) in ~/.config/spdl/songs.dir (file has been created for you)"
-        exit
-fi
+	        SONGS=$(cat "$HOME/.config/spdl/songs.dir")
+	else
+	        mkdir -p "$HOME/.config/spdl/"
+	        touch "$HOME/.config/spdl/songs.dir"
+	        echo "Please place the path to your Songs directory (WITHOUT A TRAILING SLASH) in ~/.config/spdl/songs.dir (file has been created for you)"
+	        exit
+	fi
 
 #searching for the pack
 	printf "Searching for '$2', please hold...\n\n"
@@ -31,7 +31,7 @@ fi
 	if [ -f /usr/bin/notify-send ]; then
 		notify-send "Your download of $PACK is complete" &
 		else echo "Your download of $PACK is complete"
-		fi
+	fi
 }
 
 search () {
