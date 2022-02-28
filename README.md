@@ -12,12 +12,12 @@ When supplying the pack name, always put the pack name in double quotes.
 # Installation
 ## Arch Linux and derivatives (Pacman-based)
 ```
-curl -O "https://gitlab.com/swindlesmccoop/spdl/-/raw/main/PKGBUILD"
+curl -O "https://git.cbps.xyz/swindlesmccoop/spdl/raw/branch/main/PKGBUILD"
 makepkg -si
 ```
 ## Other distributions
 ```
-git clone https://gitlab.com/swindlesmccoop/spdl.git
+git clone https://git.cbps.xyz/swindlesmccoop/spdl.git
 cd spdl
 sudo cp spdl /usr/bin/spdl
 ```
