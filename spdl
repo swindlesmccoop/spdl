@@ -23,6 +23,10 @@ fi
 	else
 		echo "Cannot access Songs directory. Does it exist?" && exit
 	fi
+	if [ "$FPACK" = "" ]; then
+		echo "No pack selected! Terminating."
+		exit
+	fi
 	printf "Download starting, this may take a while. You will receive a notification when the download is complete.\n\n"
 	curl "https://search.stepmaniaonline.net/static/new/$FPACK.zip" -o "$PACK.zip"
 	echo ""
