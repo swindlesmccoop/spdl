@@ -2,15 +2,15 @@
 #Contact: swindlesmccoop@waifu.club
 pkgname="spdl"
 pkgver=1
-pkgrel=2
+pkgrel=3
 pkgdesc="Download StepMania packs through the terminal"
 arch=("any")
-url="https://gitlab.com/swindlesmccoop/spdl"
+url="https://git.cbps.xyz/swindlesmccoop/spdl"
 depends=("curl" "fzf" "git" "unzip")
 optdepends=("libnotify: Desktop notifications when download complete")
 license=("custom")
 md5sums=("SKIP")
-source=("git+https://gitlab.com/swindlesmccoop/spdl.git")
+source=("git+https://git.cbps.xyz/swindlesmccoop/spdl.git")
 
 pkgver() {
 	cd "$pkgname"
