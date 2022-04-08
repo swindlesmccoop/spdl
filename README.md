@@ -2,8 +2,7 @@
 `spdl [-dhs] [pack]`
 
 `-d`, `--download`: (D)ownload `[pack]`\
-`-h`, `--help`: Print a (h)elp message\
-`-s`, `--search`: Search for a `[pack]` through the StepManiaOnline.net pack repository
+`-h`, `--help`: Print a (h)elp message
 
 When supplying the pack name, always put the pack name in double quotes.
 

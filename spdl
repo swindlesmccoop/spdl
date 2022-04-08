@@ -38,15 +38,8 @@ ddl () {
 	fi
 }
 
-search () {
-	printf "Searching for '$2', please hold...\n\n"
-        SEARCHTERM=$(echo "$2" | sed "s/ /%20/g" | sed "s/#/%23/g" | sed "s/\^/%5E/g" | sed "s/\!/%21/g")
-        RESULT=$(curl -s "https://search.stepmaniaonline.net/packs/$SEARCHTERM" | grep -o -P '(?<=/link/).*(?=.zip)')
-        if [ "$RESULT" = "" ]; then echo "No results found!"; else echo "$RESULT"; fi
-}
-
 spdl_help () {
-	printf 'StepMania Pack Downloader (spdl) by swindlesmccoop\n\nUsage: spdl [-dhs] [pack]\n-d, --download: (D)ownload [pack]\n-h, --help: Print this (h)elp message\n-s, --search: (S)earch for a [pack]\n\nWhen supplying the pack name, always put the pack name in double quotes\n' && exit 1
+	printf 'StepMania Pack Downloader (spdl) by swindlesmccoop\n\nUsage: spdl [-dhs] [pack]\n-d, --download: (D)ownload [pack]\n-h, --help: Print this (h)elp message\n\nWhen supplying the pack name, always put the pack name in double quotes\n' && exit 1
 }
 
 #if no parameters are supplied, print help
@@ -58,6 +51,4 @@ case "$1" in
 	--download) ddl "$@" ;;
 	-h) spdl_help ;;
 	--help) spdl_help ;;
-	-s) search "$@" ;;
-	--search) search "$@" ;;
 esac
