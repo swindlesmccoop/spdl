@@ -16,8 +16,8 @@ ddl () {
 	SEARCHTERM=$(echo "$2" | sed "s/ /%20/g" | sed "s/#/%23/g" | sed "s/\^/%5E/g" | sed "s/\!/%21/g")
 	RESULT=$(curl -s "https://search.stepmaniaonline.net/packs/$SEARCHTERM" | grep -o -P '(?<=/link/).*(?=.zip)')
 	if [ "$RESULT" = "" ]; then echo "No results found!" && exit; fi
-	PACK=$(printf "$RESULT" | fzf)
-	FPACK=$(echo "$PACK" | sed "s/ /%20/g" | sed "s/#/%23/g" | sed "s/\^/%5E/g" | sed "s/\!/%21/g")
+	PACK="$(printf "$RESULT" | fzf --layout=reverse --height 40%)"
+	FPACK="$(echo "$PACK" | sed "s/ /%20/g" | sed "s/#/%23/g" | sed "s/\^/%5E/g" | sed "s/\!/%21/g")"
 	if [ -d "$SONGS" ]; then
 		cd "$SONGS"
 	else
