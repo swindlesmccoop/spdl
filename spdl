@@ -12,7 +12,7 @@ ddl () {
 	fi
 
 #searching for the pack
-	printf "Searching for '$2', please hold...\n\n"
+	echo "Searching for '$2', please hold..."
 	SEARCHTERM=$(echo "$2" | sed "s/ /%20/g" | sed "s/#/%23/g" | sed "s/\^/%5E/g" | sed "s/\!/%21/g")
 	RESULT=$(curl -s "https://search.stepmaniaonline.net/packs/$SEARCHTERM" | grep -o -P '(?<=/link/).*(?=.zip)')
 	if [ "$RESULT" = "" ]; then echo "No results found!" && exit; fi
