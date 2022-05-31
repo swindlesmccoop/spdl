@@ -1,49 +1,47 @@
 #!/bin/sh
-
+set -x
 ddl () {
 	#make sure the user has set their Songs folder so we can make a variable
 	if [ -f "$HOME"/.config/spdl/songs.dir ]; then
-	        SONGS=$(cat "$HOME/.config/spdl/songs.dir")
+		SONGS="$(cat "$HOME/.config/spdl/songs.dir")"
 	else
-	        mkdir -p "$HOME/.config/spdl/"
-	        touch "$HOME/.config/spdl/songs.dir"
-	        echo "Please place the path to your Songs directory (WITHOUT A TRAILING SLASH) in ~/.config/spdl/songs.dir (file has been created for you)"
-	        exit
+		mkdir -p "$HOME/.config/spdl/"
+		touch "$HOME/.config/spdl/songs.dir"
+		echo "Please place the path to your Songs directory (WITHOUT A TRAILING SLASH) in ~/.config/spdl/songs.dir (file has been created for you)"
+		exit
 	fi
 
-#searching for the pack
+	#searching for the pack
 	echo "Searching for '$2', please hold..."
 	SEARCHTERM=$(echo "$2" | sed "s/ /%20/g" | sed "s/#/%23/g" | sed "s/\^/%5E/g" | sed "s/\!/%21/g")
 	RESULT=$(curl -s "https://search.stepmaniaonline.net/packs/$SEARCHTERM" | grep -o -P '(?<=/link/).*(?=.zip)')
-	if [ "$RESULT" = "" ]; then echo "No results found!" && exit; fi
+	[ "$RESULT" = "" ] && echo "No results found!" && exit
 	PACK="$(printf "$RESULT" | fzf --layout=reverse --height 40%)"
 	FPACK="$(echo "$PACK" | sed "s/ /%20/g" | sed "s/#/%23/g" | sed "s/\^/%5E/g" | sed "s/\!/%21/g")"
-	if [ -d "$SONGS" ]; then
-		cd "$SONGS"
-	else
-		echo "Cannot access Songs directory. Does it exist?" && exit
-	fi
-	if [ "$FPACK" = "" ]; then
-		echo "No pack selected! Terminating."
-		exit
-	fi
+	[ "$FPACK" = "" ] && echo "No pack selected! Terminating." && exit
+	[ -d "$SONGS" ] && cd "$SONGS"
 	printf "Download starting, this may take a while. You will receive a notification when the download is complete.\n\n"
 	curl "https://search.stepmaniaonline.net/static/new/$FPACK.zip" -o "$PACK.zip"
 	echo ""
 	unzip -qq -o "$PACK.zip" #automatically overwrites pack if it exists
 	rm "$PACK.zip"
-	if [ -f /usr/bin/notify-send ]; then
-		notify-send "Your download of $PACK is complete" &
-		else echo "Your download of $PACK is complete"
-	fi
+	[ -f /usr/bin/notify-send ] && $(notify-send "Your download of $PACK is complete" &) || echo "Your download of $PACK is complete"
 }
 
 spdl_help () {
-	printf 'StepMania Pack Downloader (spdl) by swindlesmccoop\n\nUsage: spdl [-dhs] [pack]\n-d, --download: (D)ownload [pack]\n-h, --help: Print this (h)elp message\n\nWhen supplying the pack name, always put the pack name in double quotes\n' && exit 1
+	printf 'StepMania Pack Downloader (spdl) by swindlesmccoop
+
+Usage: spdl [-dhs] [pack]
+-d, --download: (D)ownload [pack]
+-h, --help: Print this (h)elp message
+
+When supplying the pack name, always put the pack name in double quotes
+'
+	exit
 }
 
 #if no parameters are supplied, print help
-if [ $# -eq 0 ]; then spdl_help; fi
+[ $# -eq 0 ] && spdl_help
 
 #handle arguments
 case "$1" in
