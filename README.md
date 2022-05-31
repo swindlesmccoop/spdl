@@ -1,17 +1,17 @@
 # Usage
-`spdl [-dhs] [pack]`
+`spdl [-dh] [pack]`
 
 `-d`, `--download`: (D)ownload `[pack]`\
 `-h`, `--help`: Print a (h)elp message
 
-When supplying the pack name, always put the pack name in double quotes.
+When supplying input with spaces, either use underscores to represent spaces or use quotes (single or double, doesn't matter).
 
-# [Tutorial Video](https://youtube.com/watch?v=T04WqVUnaVI)
+# [Tutorial Video (outdated, new one coming soon)](https://youtube.com/watch?v=T04WqVUnaVI)
 
 # Installation
 ## Arch Linux and derivatives (Pacman-based)
 ```
-curl -O "https://git.cbps.xyz/swindlesmccoop/spdl/raw/branch/master/PKGBUILD"
+curl -O "https://git.cbps.xyz/swindlesmccoop/PKGBUILDS/raw/branch/master/spdl/PKGBUILD"
 makepkg -si
 ```
 ## Other distributions
