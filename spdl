@@ -1,5 +1,5 @@
 #!/bin/sh
-set -x
+
 ddl () {
 	#make sure the user has set their Songs folder so we can make a variable
 	if [ -f "$HOME"/.config/spdl/songs.dir ]; then
