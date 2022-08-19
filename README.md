@@ -18,5 +18,5 @@ makepkg -si
 ```
 git clone https://git.cbps.xyz/swindlesmccoop/spdl.git
 cd spdl
-sudo cp spdl /usr/bin/spdl
+make && sudo make install
 ```
