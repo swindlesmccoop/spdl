@@ -8,7 +8,7 @@ install:
 	mkdir -p ${DESTDIR}${PREFIX}/bin/
 	cp spdl ${DESTDIR}${PREFIX}/bin/
 
-clean:
+uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/spdl
 
 .PHONY: spdl install clean
